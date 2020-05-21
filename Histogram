@@ -1,0 +1,167 @@
+import java.util.*;
+public class histogram {
+	public static void main(String args[]) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int h[] = new int [n];
+		for (int i = 0; i < n; i++)
+			h[i] = sc.nextInt();
+		int max = 0;
+		Stack<Integer> stack = new Stack<>();
+		stack.add(0);
+		for (int i = 1; i < n; i++) {
+			int curr = h[i];
+			if (curr >= h[stack.peek()]) {
+				stack.add(i);
+			} else {
+				while (!stack.isEmpty() && curr <= h[stack.peek()]) {
+					int temp = h[stack.pop()];
+					if (stack.isEmpty()) {
+						max = Math.max(max, temp * i); //Wo wala condition jab piche jaate gaye aur chota element milta gaya
+					} else {
+						max = Math.max(max, (i - stack.peek() - 1) * temp);
+					}
+				}
+				stack.add(i);
+			}
+		}
+		if (!stack.isEmpty()) {
+			int i = h.length;
+			while (!stack.isEmpty()) {
+				int temp = h[stack.pop()];
+				if (stack.isEmpty()) {
+					max = Math.max(max, temp * i);
+				} else {
+					max = Math.max(max, temp * (i - stack.peek() - 1));
+				}
+			}
+		}
+		System.out.println(max);
+	}
+}
+
+Skyline Real Estate Developers is planning to demolish a number of old, unoccupied buildings and construct a shopping mall in their place. Your task is to find the largest solid area in which the mall can be constructed.
+
+There are a number of buildings in a certain two-dimensional landscape. Each building has a height, given by . If you join  adjacent buildings, they will form a solid rectangle of area .
+
+For example, the heights array . A rectangle of height  and length  can be constructed within the boundaries. The area formed is .
+
+Function Description
+
+Complete the function largestRectangle int the editor below. It should return an integer representing the largest rectangle that can be formed within the bounds of consecutive buildings.
+
+largestRectangle has the following parameter(s):
+
+h: an array of integers representing building heights
+Input Format
+
+The first line contains , the number of buildings.
+The second line contains  space-separated integers, each representing the height of a building.
+
+Constraints
+
+Output Format
+
+Print a long integer representing the maximum area of rectangle formed.
+
+Sample Input
+
+5
+1 2 3 4 5
+Sample Output
+
+9
+Explanation
+
+An illustration of the test case follows.
+image
+
+
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the largestRectangle function below.
+    static long largestRectangle(int[] h) {
+
+        if(h.length==0)
+            return 0;
+        if(h.length==1)
+            return h[0];
+        int max=0;
+        Stack<Integer> stack=new Stack<>();
+        stack.add(0);
+        for(int i=1;i<h.length;i++){
+            int curr=h[i];
+            if(curr>=h[stack.peek()]){
+                stack.add(i);
+            }
+            else{
+                while(!stack.isEmpty()&&h[stack.peek()]>curr){
+                    int temp=h[stack.pop()];
+                    if(stack.isEmpty()){
+                        max=Math.max(max,temp*i);
+                    }
+                    else{
+                        max=Math.max(max,temp*(i-stack.peek()-1));
+                    }
+               
+                }
+                 stack.add(i);
+            }
+        }
+
+                 if(!stack.isEmpty()){
+                     int i=h.length;
+                     while(!stack.isEmpty()){
+                           int temp=h[stack.pop()];
+                              if(stack.isEmpty()){
+                           max=Math.max(max,temp*i);
+                    }
+
+                    else{
+                        max=Math.max(max,temp*(i-stack.peek()-1));
+                    }
+                     }
+                  
+                 
+               
+                }
+              return max;
+
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        int[] h = new int[n];
+
+        String[] hItems = scanner.nextLine().split(" ");
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int i = 0; i < n; i++) {
+            int hItem = Integer.parseInt(hItems[i]);
+            h[i] = hItem;
+        }
+
+        long result = largestRectangle(h);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
